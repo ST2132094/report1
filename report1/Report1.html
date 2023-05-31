@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>2132094_Report1</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.min.js"></script>
+</head>
+<body>
+  <script>
+    var init = function(){
+      //レンダラーを作成
+      var renderer = new THREE.WebGLRenderer();
+
+      var width = 800,
+          height = 600;
+
+      //レンダラーのサイズ設定
+      renderer.setSize(width,height);
+      //canvasをbodyに追加
+      document.body.appendChild(renderer.domElement);
+
+      //シーンを作成
+      var scene = new THREE.Scene();
+
+      //カメラを作成
+      var camera = new THREE.PerspectiveCamera(45,800/600,1,1000);
+
+  //ドーナッツ
+  var torusGeometry = new THREE.TorusGeometry( 7, 0.5, 25, 25 ); 
+  var torusMaterial = new THREE. MeshToonMaterial( { color: 0xd77b00 } );
+  var torus = new THREE.Mesh( torusGeometry, torusMaterial );
+  torus.position.set( 0.5, 0, -15);
+  scene.add( torus );
+
+  //球
+  var sphereGeometry = new THREE.SphereGeometry( 0.7, 32, 32 ); 
+  var sphereMaterial = new THREE. MeshPhongMaterial( {color: 0xff0000,wireframe: true} );
+  var sphere1 = new THREE.Mesh( sphereGeometry, sphereMaterial );
+  var sphere2 = new THREE.Mesh( sphereGeometry, sphereMaterial );
+  sphere1.position.set( 1.5, 0, -6 );
+  sphere2.position.set( -1.5, 0, -6 );
+  scene.add( sphere1 );
+  scene.add( sphere2 );
+
+  //５角柱
+  var cylinderGeometry = new THREE.CylinderGeometry( 0.3, 0.3, 1, 5 );
+  var cylinderMaterial = new THREE.MeshPhongMaterial( {color: 0xffff00,wireframe: true} );
+  var cylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial );
+  cylinder.position.set( 0, 0, -7 );
+  scene.add( cylinder );
+
+    // 平行光源1
+    var directionalLight1 = new THREE.DirectionalLight(0xffffff);
+    directionalLight1.position.set(1, 1, 1);
+    // シーンに追加
+    scene.add(directionalLight1);
+    // 平行光源2
+        var directionalLight2 = new THREE.DirectionalLight(0xffffff);
+    directionalLight2.position.set(-1, 1, 1);
+    // シーンに追加
+    scene.add(directionalLight2);
+
+      // 初回実行
+      var update = function() {
+      requestAnimationFrame(update);
+  
+      // 回転させる
+      torus.rotation.x +=0.01;
+      torus.rotation.y +=0.01;
+      torus.position.z +=0.01;
+      sphere1.rotation.x -= 0.01;
+      sphere1.rotation.y -= 0.01;
+      sphere1.position.z -=0.03;
+      sphere2.rotation.x += 0.01;
+      sphere2.rotation.y += 0.01;
+      sphere2.position.z -=0.03;
+      cylinder.rotation.x +=0.01;
+      cylinder.rotation.y +=0.01;
+      cylinder.position.z +=0.01;
+      
+  
+      renderer.render(scene, camera);
+    };
+    update();
+  }
+  window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
